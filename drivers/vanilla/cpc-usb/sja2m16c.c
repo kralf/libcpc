@@ -63,7 +63,7 @@
 
 #include "cpc.h"
 #include "cpc_int.h"
-#include "cpcusb.h"
+#include "cpc-usb.h"
 
 #include "sja2m16c.h"
 

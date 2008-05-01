@@ -7,7 +7,9 @@ EXTRA_CFLAGS = $(CMODFLAGS)
 
 obj-m := cpc-usb.o
 
-all: cpc-usb.c
+cpc-usb-objs := cpc-usb.o sja2m16c.o
+
+all: cpc-usb.c sja2m16c.c
 	@$(MAKE) -C $(KERNEL_SRC) SUBDIRS=$(PWD) M=$(PWD) modules
 
 install: cpc-usb.ko
