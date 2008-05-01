@@ -1,0 +1,25 @@
+##########################
+# start user modified part
+
+# enable the interface for you want a driver to be compiled
+CPC_CARD_SUPPORTED=false
+CPC_PCI_SUPPORTED=false
+CPC_XT_SUPPORTED=false
+CPC_USB_SUPPORTED=true
+CPC_ECO_SUPPORTED=false
+
+# set the maximum count of CAN channels supported by the library
+CPC_CAN_MAX_DEVICE=1
+
+# the path where user application search for cpc.h and cpclib.h
+CPC_H_PATH = /usr/include/linux
+
+# enable this if you don't use devfs nor udev
+CREATE_INODES=false
+
+CLIBFLAGS = -DCAN_MAX_DEVICE=$(CPC_CAN_MAX_DEVICE)
+
+OUTPUT_FILE = /dev/null
+
+# end user modified part
+##########################
