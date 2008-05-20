@@ -346,16 +346,16 @@ int CPC_OpenChannel(char * ucChannel)
     static unsigned int firstCall = 1;
     unsigned int slot, i;
     int retval, fd;
+    char *devFile = NULL;
+    int   intf    = CPCUSB;
 
 #ifdef _CPC_CONF_INI
     char *sectionList[32];
     char  valueBuffer[50];
     int   sectionCount;
-    int   intf    = 0;
     int   minor   = 0;
     int   tmp     = 0;
     int   found   = 0;
-    char *devFile = NULL;
 
     unsigned char configIrq = 0;
     unsigned int  irqNr;

@@ -1,10 +1,10 @@
 include $(PWD)/Config
 
-KERNEL_SRC ?= /usr/src/linux-source-$(shell uname -r)
+KERNEL_SRC ?= /usr/src/linux-headers-$(shell uname -r)
 KERNEL_MODS ?= /lib/modules/$(shell uname -r)
 
 EXTRA_CFLAGS = $(CMODFLAGS)
-CLIBFLAGS += -DCPC_LIB_VERSION=\"$(LIBVER)\" -D_CPC_CONF_INI -D_CPC_LIB_COMPAT_MODE
+CLIBFLAGS += -DCPC_LIB_VERSION=\"$(LIBVER)\" -D_CPC_LIB_COMPAT_MODE
 
 obj-m := cpc-usb.o
 
@@ -18,6 +18,7 @@ module: cpc_usb.c
 lib: cpclib.c cpc_async.c ethercan.c ini_parser.c
 	$(CC) $(CLIBFLAGS) -shared -o libcpc.so cpclib.c cpc_async.c \
 	ethercan.c ini_parser.c
+	ln -sf $(PWD)/libcpc.so ../can/libcpc.so
 
 install: module-install lib-install
 

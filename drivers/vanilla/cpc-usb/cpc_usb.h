@@ -27,7 +27,7 @@
 typedef struct CPC_USB_READ_URB {
     unsigned char        *buffer;   /* the buffer to send data */
     size_t                size;     /* the size of the send buffer */
-    struct urb           *urb;      /* the urb used to send data */ 
+    struct urb           *urb;      /* the urb used to send data */
 } CPC_USB_READ_URB_T;
 
 typedef struct CPC_USB_WRITE_URB {
@@ -38,7 +38,7 @@ typedef struct CPC_USB_WRITE_URB {
     struct completion     finished;    /* wait for the write to finish */
 } CPC_USB_WRITE_URB_T;
 
-#define CPC_USB_URB_CNT  10
+#define CPC_USB_URB_CNT  64
 
 typedef struct CPC_USB {
     struct usb_device    *udev;         /* save off the usb device pointer */
@@ -53,18 +53,18 @@ typedef struct CPC_USB {
 
     unsigned char         intr_in_buffer[4]; /* interrupt transfer buffer */
     struct urb           *intr_in_urb;       /* interrupt transfer urb */
-    
+
     CPC_USB_WRITE_URB_T   wrUrbs[CPC_USB_URB_CNT];
-    
+
     int                   open;              /* if the port is open or not */
     int                   present;           /* if the device is not disconnected */
     struct semaphore      sem;               /* locks this structure */
-    
+
     int                   free_slots;        /* free send slots of CPC-USB */
     int                   idx;
-  
+
     spinlock_t            slock;
-    
+
     char                  serialNumber[128]; /* serial number */
     int                   productId; /* product id to differ between M16C and LPC2119 */
     CPC_CHAN_T           *chan;
