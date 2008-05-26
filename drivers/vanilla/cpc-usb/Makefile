@@ -6,6 +6,8 @@ KERNEL_MODS ?= /lib/modules/$(shell uname -r)
 EXTRA_CFLAGS = $(CMODFLAGS)
 CLIBFLAGS += -DCPC_LIB_VERSION=\"$(LIBVER)\" -D_CPC_LIB_COMPAT_MODE
 
+PREFIX = /usr/local
+
 obj-m := cpc-usb.o
 
 cpc-usb-objs := cpc_usb.o sja2m16c.o
@@ -28,7 +30,7 @@ module-install: cpc-usb.ko
 	depmod -ae
 
 lib-install: libcpc.so
-	install -c -o root -g root -m 644 libcpc.so /usr/lib
+	install -c -m 644 libcpc.so $(PREFIX)/lib
 
 clean:
 	rm -rf *.o *.ko *.mod.c .*.cmd .tmp_versions *~ *.a *.so *.d
