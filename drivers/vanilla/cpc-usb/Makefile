@@ -1,10 +1,12 @@
 include $(PWD)/Config
 
+LIBVER = 2.42
+
 KERNEL_SRC ?= /usr/src/linux-headers-$(shell uname -r)
 KERNEL_MODS ?= /lib/modules/$(shell uname -r)
 
 EXTRA_CFLAGS = $(CMODFLAGS)
-CLIBFLAGS += -DCPC_LIB_VERSION=\"$(LIBVER)\" -D_CPC_LIB_COMPAT_MODE
+CLIBFLAGS += -fPIC -DCPC_LIB_VERSION=\"$(LIBVER)\" -DCPC_LIB_COMPAT_MODE
 
 PREFIX = /usr/local
 
@@ -34,3 +36,4 @@ lib-install: libcpc.so
 
 clean:
 	rm -rf *.o *.ko *.mod.c .*.cmd .tmp_versions *~ *.a *.so *.d
+	rm -rf Module.symvers

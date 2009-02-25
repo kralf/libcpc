@@ -8,7 +8,7 @@
 /*           85304 Ilmmuenster                                          */
 /*           Phone: +49-8441-490260                                     */
 /*           Fax:   +49-8441-81860                                      */
-/*           email: support@ems-wuensche.com                            */ 
+/*           email: support@ems-wuensche.com                            */
 /*           WWW:   www.ems-wuensche.com                                */
 /*                                                                      */
 /* All rights reserved                                                  */
@@ -23,7 +23,8 @@
 #ifndef INI_PARSER_H
 #define INI_PARSER_H
 
-char *ini_get_key_value(const char *section, const char *skey, const char *file, char *dst, size_t size);
+char *ini_get_key_value(const char *section, const char *skey,
+			const char *file, char *dst, size_t size);
 int ini_get_section_list(const char *file, char **list, int maxsections);
 
 #endif
