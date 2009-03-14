@@ -32,7 +32,7 @@ module-install: cpc-usb.ko
 	depmod -ae
 
 lib-install: libcpc.so
-	install -c -m 644 libcpc.so $(PREFIX)/lib
+	install -c -m 755 libcpc.so $(PREFIX)/lib
 
 clean:
 	rm -rf *.o *.ko *.mod.c .*.cmd .tmp_versions *~ *.a *.so *.d
