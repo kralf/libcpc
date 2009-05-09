@@ -72,7 +72,7 @@ module-install: cpc-usb.ko
 	depmod -ae
 	install -c -o root -g root -m 644 udev.rules \
 	/etc/udev/rules.d/41-cpc-usb.rules
-	udevadm control --reload_rules
+	udevadm control --reload-rules
 
 lib-install: libcpc.so
 	install -c -m 755 libcpc.so $(PREFIX)/lib
