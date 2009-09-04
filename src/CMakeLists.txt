@@ -6,4 +6,7 @@ remake_define(CAN_MAX_DEVICE 10
   CACHE STRING "The maximum number of CPC CAN devices.")
 
 remake_add_library(cpc PREFIX OFF)
-remake_add_headers(cpc.h)
+remake_add_headers(
+  cpc.h
+  cpclib.h
+)
