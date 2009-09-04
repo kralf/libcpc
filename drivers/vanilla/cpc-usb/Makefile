@@ -21,14 +21,10 @@ OUTPUT_FILE = /dev/null
 
 PWD := $(shell pwd)
 
-LIBVER = 2.42
-
 KERNEL_SRC ?= /usr/src/linux-headers-$(shell uname -r)
 KERNEL_MODS ?= /lib/modules/$(shell uname -r)
 
 EXTRA_CFLAGS = $(CMODFLAGS)
-
-PREFIX = /usr/local
 
 obj-m := cpc-usb.o
 
