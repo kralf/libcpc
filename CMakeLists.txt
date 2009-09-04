@@ -4,13 +4,13 @@ include(ReMake)
 
 remake_project(
   libcpc
-  2.42
-  stable
-  "CPC interface library by Dr. Thomas Wuensche."
-  "Dr. Thomas Wuensche"
-  "sales@ems-wuensche.com"
-  "http://www.ems-wuensche.de"
-  "Propietary License"
+  VERSION 2.42
+  RELEASE stable
+  SUMMARY "CPC interface library by Dr. Thomas Wuensche."
+  AUTHOR "Dr. Thomas Wuensche"
+  CONTACT "sales@ems-wuensche.com"
+  HOME "http://www.ems-wuensche.de"
+  LICENSE "Propietary License"
   INSTALL /usr
 )
 
