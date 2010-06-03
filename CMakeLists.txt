@@ -15,4 +15,8 @@ remake_project(
 )
 
 remake_pack_deb()
-remake_pack_deb(COMPONENT dev)
+remake_pack_deb(
+  COMPONENT dev
+  DESCRIPTION "development headers"
+  libcpc
+)
