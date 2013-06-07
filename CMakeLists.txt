@@ -14,9 +14,47 @@ remake_project(
   INSTALL /usr
 )
 
-remake_pack_deb()
+remake_component(
+  udev
+  CONFIGURATION_DESTINATION /etc/udev
+)
+remake_add_directories(
+  rules
+  COMPONENT udev
+)
+
+remake_pack_deb(
+  COMPONENT kernel-source
+  DESCRIPTION "kernel module sources"
+  DEPENDS dkms
+  EXTRA debian/module/*
+)
+remake_pack_deb(
+  COMPONENT udev
+  DESCRIPTION "udev rules"
+  DEPENDS libcpc-kernel-source udev
+  EXTRA debian/rules/*
+)
+remake_pack_deb(
+  DEPENDS libcpc-udev
+)
 remake_pack_deb(
   COMPONENT dev
   DESCRIPTION "development headers"
-  libcpc
+  DEPENDS libcpc
+)
+
+remake_distribute_deb(
+  DISTRIBUTION lucid
+  SECTION libs
+  UPLOAD ppa:kralf/asl
+  DEPENDS remake dkms
+  PASS CMAKE_BUILD_TYPE LIBCPC_GIT_REVISION
+)
+remake_distribute_deb(
+  DISTRIBUTION precise
+  SECTION libs
+  UPLOAD ppa:kralf/asl
+  DEPENDS remake dkms
+  PASS CMAKE_BUILD_TYPE LIBCPC_GIT_REVISION
 )

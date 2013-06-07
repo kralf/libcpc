@@ -1,0 +1,30 @@
+#! /bin/sh
+
+set -e
+
+CVERSION=`dpkg-query -W -f='${Version}' libcpc-kernel-source`
+
+ARCH=`dpkg --print-architecture`
+case $ARCH in
+  amd64)
+    ARCH="x86_64"
+    ;;
+  lpia)
+    ARCH="i686"
+    ;;
+  i386)
+    ARCH="i686"
+    ;;
+  *)
+    echo "WARNING: unsupported arch: $ARCH"
+    ARCH="$ARCH"
+    ;;
+esac
+
+case "$1" in
+  configure)
+    /usr/lib/dkms/common.postinst libcpc $CVERSION /usr/share/libcpc $ARCH $2 || exit $?
+    ;;
+esac
+
+exit 0

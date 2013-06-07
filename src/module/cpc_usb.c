@@ -23,11 +23,9 @@
 #include <linux/vmalloc.h>
 #include <linux/module.h>
 #include <linux/poll.h>
-#include <linux/smp_lock.h>
 #include <linux/completion.h>
 #include <asm/uaccess.h>
 #include <linux/usb.h>
-
 #include <linux/version.h>
 
 /* usb_kill_urb has been introduced in kernel version 2.6.8 (RC2) */
@@ -96,7 +94,11 @@ static CPC_USB_T *CPCUSB_Table[CPC_USB_CARD_CNT] = { 0 };
 static unsigned int CPCUsbCnt = 0;
 
 /* prevent races between open() and disconnect() */
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 static DECLARE_MUTEX(disconnect_sem);
+#else
+static DEFINE_SEMAPHORE(disconnect_sem);
+#endif
 
 /* local function prototypes */
 static ssize_t cpcusb_read(struct file *file, char *buffer, size_t count,
@@ -949,7 +951,11 @@ static int cpcusb_probe(struct usb_interface *interface,
 	memset(chan, 0, sizeof(CPC_CHAN_T));
 	ResetBuffer(chan);
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 	init_MUTEX(&card->sem);
+#else
+  sema_init(&card->sem, 1);
+#endif
 	spin_lock_init(&card->slock);
 
 	card->udev = udev;
@@ -999,11 +1005,19 @@ static int cpcusb_probe(struct usb_interface *interface,
 					err("No free urbs available");
 					goto error;
 				}
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 				card->urbs[j].buffer =
 				    usb_buffer_alloc(udev,
 						     card->urbs[j].size,
 						     GFP_KERNEL,
 						     &card->urbs[j].urb->transfer_dma);
+#else
+				card->urbs[j].buffer =
+				    usb_alloc_coherent(udev,
+						     card->urbs[j].size,
+						     GFP_KERNEL,
+						     &card->urbs[j].urb->transfer_dma);
+#endif
 				if (!card->urbs[j].buffer) {
 					err("Couldn't allocate bulk_in_buffer");
 					goto error;
@@ -1029,9 +1043,15 @@ static int cpcusb_probe(struct usb_interface *interface,
 					err("No free urbs available");
 					goto error;
 				}
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 				card->wrUrbs[j].buffer = usb_buffer_alloc(udev,
 				                               card->wrUrbs[j].size, GFP_KERNEL,
 				                               &card->wrUrbs[j].urb->transfer_dma);
+#else
+				card->wrUrbs[j].buffer = usb_alloc_coherent(udev,
+				                               card->wrUrbs[j].size, GFP_KERNEL,
+				                               &card->wrUrbs[j].urb->transfer_dma);
+#endif
 
 				if (!card->wrUrbs[j].buffer) {
 					err("Couldn't allocate bulk_out_buffer");
@@ -1102,9 +1122,15 @@ static int cpcusb_probe(struct usb_interface *interface,
 error:
 	for (j = 0; j < CPC_USB_URB_CNT; j++) {
 		if (card->urbs[j].buffer) {
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 			usb_buffer_free(card->udev, card->urbs[j].size,
 					card->urbs[j].buffer,
 					card->urbs[j].urb->transfer_dma);
+#else
+			usb_free_coherent(card->udev, card->urbs[j].size,
+					card->urbs[j].buffer,
+					card->urbs[j].urb->transfer_dma);
+#endif
 			card->urbs[j].buffer = NULL;
 		}
 		if (card->urbs[j].urb) {
@@ -1145,18 +1171,30 @@ static void cpcusb_disconnect(struct usb_interface *interface)
 			usb_kill_urb(card->wrUrbs[j].urb);
 			wait_for_completion(&card->wrUrbs[j].finished);
 		}
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 		usb_buffer_free(card->udev, card->wrUrbs[j].size,
 				card->wrUrbs[j].buffer,
 				card->wrUrbs[j].urb->transfer_dma);
+#else
+		usb_free_coherent(card->udev, card->wrUrbs[j].size,
+				card->wrUrbs[j].buffer,
+				card->wrUrbs[j].urb->transfer_dma);
+#endif
 		usb_free_urb(card->wrUrbs[j].urb);
 	}
 	info("%d write URBs freed", CPC_USB_URB_CNT);
 
 	/* free all urbs and their buffers */
 	for (j = 0; j < CPC_USB_URB_CNT; j++) {
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0))
 		usb_buffer_free(card->udev, card->urbs[j].size,
 				card->urbs[j].buffer,
 				card->urbs[j].urb->transfer_dma);
+#else
+		usb_free_coherent(card->udev, card->wrUrbs[j].size,
+				card->wrUrbs[j].buffer,
+				card->wrUrbs[j].urb->transfer_dma);
+#endif
 		usb_free_urb(card->urbs[j].urb);
 	}
 	info("%d read URBs freed", CPC_USB_URB_CNT);

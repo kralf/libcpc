@@ -1,3 +1,11 @@
+libcpc (2.42-24) unstable; urgency=low
+
+  * Restructured project
+  * Added DKMS kernel module building
+  * Added udev rules
+
+ -- Ralf Kaestner <ralf.kaestner@gmail.com>  Fri, 07 Jun 2013 11:45:00 +0100
+
 libcpc (2.42-23) unstable; urgency=low
 
   * Added SVN changelog
