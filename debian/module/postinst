@@ -2,7 +2,7 @@
 
 set -e
 
-CVERSION=`dpkg-query -W -f='${Version}' libcpc-kernel-source`
+CVERSION=`dpkg-query -W -f='${Version}' libcpc-kernel-source | sed 's/~.*$//'`
 
 ARCH=`dpkg --print-architecture`
 case $ARCH in

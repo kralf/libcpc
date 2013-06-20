@@ -1,3 +1,11 @@
+libcpc (2.42-25) unstable; urgency=low
+
+  * Fixed Debian control extra (full version was passed to dkms,
+    whilst kernel module sources got installed under
+    libcpc-${REMAKE_PROJECT_FILENAME_VERSION})
+
+ -- Ralf Kaestner <ralf.kaestner@gmail.com>  Thu, 20 Jun 2013 07:27:00 +0100
+
 libcpc (2.42-24) unstable; urgency=low
 
   * Restructured project
