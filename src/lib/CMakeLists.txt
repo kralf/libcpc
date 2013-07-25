@@ -10,3 +10,4 @@ remake_add_headers(
   cpc.h
   cpclib.h
 )
+remake_pkg_config_generate()

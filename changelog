@@ -1,3 +1,9 @@
+libcpc (2.42-26) unstable; urgency=low
+
+  * Added pkg-config file
+
+ -- Ralf Kaestner <ralf.kaestner@gmail.com>  Thu, 25 Jul 2013 18:37:00 +0100
+
 libcpc (2.42-25) unstable; urgency=low
 
   * Fixed Debian control extra (full version was passed to dkms,
