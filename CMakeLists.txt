@@ -48,13 +48,13 @@ remake_distribute_deb(
   DISTRIBUTION lucid
   SECTION libs
   UPLOAD ppa:kralf/asl
-  DEPENDS remake dkms
+  DEPENDS dkms remake pkg-config
   PASS CMAKE_BUILD_TYPE LIBCPC_GIT_REVISION
 )
 remake_distribute_deb(
   DISTRIBUTION precise
   SECTION libs
   UPLOAD ppa:kralf/asl
-  DEPENDS remake dkms
+  DEPENDS dkms remake pkg-config
   PASS CMAKE_BUILD_TYPE LIBCPC_GIT_REVISION
 )
