@@ -1,3 +1,9 @@
+libcpc (2.42-28) unstable; urgency=low
+
+  * Release distribution for Ubuntu Trusty Tahr
+
+ -- Ralf Kaestner <ralf.kaestner@gmail.com>  Wed, 24 Sep 2014 10:46:00 +0100
+
 libcpc (2.42-27) unstable; urgency=low
 
   * Added missing pkg-config build dependency
