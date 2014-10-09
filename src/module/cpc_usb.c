@@ -33,6 +33,10 @@
 #define usb_kill_urb usb_unlink_urb
 #endif
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0))
+#   include <linux/seq_file.h>
+#endif
+
 #ifdef CONFIG_PROC_FS
 #   include <linux/proc_fs.h>
 #endif
@@ -176,6 +180,7 @@ static struct usb_driver cpcusb_driver = {
 	.id_table = cpcusb_table,
 };
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0))
 static int cpcusb_create_info_output(char *buf)
 {
 	int i = 0, j;
@@ -210,6 +215,37 @@ static int cpcusb_proc_read_info(char *page, char **start, off_t off,
 
 	return len;
 }
+#else
+static int cpcusb_create_info_output(struct seq_file *m, void *v)
+{
+  int i = 0, j;
+
+  for (j = 0; j < CPC_USB_CARD_CNT; j++) {
+    if (CPCUSB_Table[j]) {
+      CPC_USB_T *card = CPCUSB_Table[j];
+      CPC_CHAN_T *chan = card->chan;
+
+      /* MINOR CHANNELNO BUSNO SLOTNO */
+      seq_printf(m, "%d %s\n", chan->minor,
+             card->serialNumber);
+    }
+  }
+
+  return 0;
+}
+
+static int cpcusb_proc_info_open(struct inode *inode, struct file *file)
+{
+  return single_open(file, cpcusb_create_info_output, NULL);
+}
+
+static const struct file_operations cpcusb_proc_fops = {
+  .open = cpcusb_proc_info_open,
+  .read = seq_read,
+  .llseek = seq_lseek,
+  .release = seq_release,
+};
+#endif
 
 /*
  * Remove CPC-USB and cleanup
@@ -1241,9 +1277,15 @@ static int __init CPCUsb_Init(void)
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32))
     procDir->owner = THIS_MODULE;
 #endif
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0))
 		procEntry = create_proc_read_entry("info", 0444, procDir,
 						   cpcusb_proc_read_info,
 						   NULL);
+#else
+    procEntry = proc_create_data("info", 0444, procDir,
+               &cpcusb_proc_fops,
+               NULL);
+#endif
 		if (!procEntry) {
 			err("Could not create proc entry %s", CPC_USB_PROC_DIR "/info");
 			remove_proc_entry(CPC_USB_PROC_DIR, NULL);
