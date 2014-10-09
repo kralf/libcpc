@@ -5,3 +5,4 @@ BUILT_MODULE_NAME[0]="cpc-usb"
 MAKE[0]="make module KERNELDIR=/lib/modules/$kernelver/build KERNELSRC=$kernel_source_dir"
 DEST_MODULE_LOCATION[0]="/kernel/drivers/usb/misc"
 REMAKE_INITRD=yes
+AUTOINSTALL=yes

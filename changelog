@@ -1,3 +1,9 @@
+ libcpc (2.42-29) unstable; urgency=low
+
+  * Enabled AUTOINSTALL in dkms.conf
+
+ -- Ralf Kaestner <ralf.kaestner@gmail.com>  Thu, 09 Oct 2014 08:22:00 +0200
+ 
 libcpc (2.42-28) unstable; urgency=low
 
   * Release distribution for Ubuntu Trusty Tahr
