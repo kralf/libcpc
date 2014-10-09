@@ -1,4 +1,10 @@
- libcpc (2.42-29) unstable; urgency=low
+libcpc (2.42-30) unstable; urgency=low
+
+  * Removed whitespace char from changelog
+
+ -- Ralf Kaestner <ralf.kaestner@gmail.com>  Thu, 09 Oct 2014 08:23:00 +0200
+ 
+libcpc (2.42-29) unstable; urgency=low
 
   * Enabled AUTOINSTALL in dkms.conf
 
